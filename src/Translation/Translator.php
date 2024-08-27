@@ -15,7 +15,8 @@ class Translator implements TranslatorInterface
     public function __construct(
         private TranslatorInterface $translator,
         private RequestStack $requestStack,
-        private string $defaultLocale
+        private string $defaultLocale,
+        private array $enabledLocales
     ) {
     }
 
@@ -45,7 +46,7 @@ class Translator implements TranslatorInterface
             return $localeCode;
         }
 
-        $preferredLanguage = $request->getPreferredLanguage();
+        $preferredLanguage = $request->getPreferredLanguage($this->enabledLocales);
 
         return empty($preferredLanguage) ? $this->defaultLocale : $preferredLanguage;
     }
